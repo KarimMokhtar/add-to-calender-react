@@ -27,10 +27,6 @@ export const CALENDAR_OPTIONS = [
   },
 ];
 
-const generateDuration = event => {
-  const minutes = Math.floor((+new Date(event.endsAt) - +new Date(event.startsAt)) / 60 / 1000);
-  return `${Math.floor(minutes / 60)}:${`0${minutes % 60}`.slice(-2)}`;
-};
 
 const formatTime = time => new Date(time).toISOString().replace(/[-:]|\.\d{3}/g, "");
 const formatOutlookTime = time => new Date(time).toISOString();
@@ -68,37 +64,6 @@ const buildOutlookCalendarUrl = event =>
     path: "/calendar/view/Month",
   });
 
-const buildYahooCalendarUrl = event =>
-  buildURL("https://calendar.yahoo.com", {
-    v: 60,
-    view: "d",
-    type: 20,
-    title: event.name,
-    st: formatTime(event.startsAt),
-    dur: generateDuration(event),
-    desc: event.details,
-    in_loc: event.location,
-  });
-
-const buildAppleCalendarUrl = event => {
-  const components = [
-    "VERSION:2.0",
-    "CALSCALE:GREGORIAN",
-    "BEGIN:VEVENT",
-    `URL:${document.URL}`,
-    "STATUS:CONFIRMED",
-    "SEQUENCE:0",
-    `DTSTART:${formatTime(event.startsAt)}`,
-    `DTEND:${formatTime(event.endsAt)}`,
-    `SUMMARY:${event.name}`,
-    `DESCRIPTION:${event.details}`,
-    `LOCATION:${event.location}`,
-    "END:VEVENT",
-    "END:VCALENDAR",
-  ];
-
-  return encodeURI(`data:text/calendar;charset=utf8,${components.join("\n")}`);
-};
 
 const buildICSCalendarUrl = event => {
   const components = [
@@ -121,6 +86,6 @@ const buildICSCalendarUrl = event => {
 export const generateEventURLs = event => ({
   google: buildGoogleCalendarUrl(event),
   outlook: buildOutlookCalendarUrl(event),
-  apple: buildAppleCalendarUrl(event),
+  apple: buildICSCalendarUrl(event),
   ics: buildICSCalendarUrl(event),
 });
