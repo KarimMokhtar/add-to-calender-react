@@ -48,7 +48,7 @@ const buildGoogleCalendarUrl = event =>
     location: event.location,
     text: event.name,
     details: event.details,
-    ctz: event.timeZone,
+    // ctz: event.timeZone,
   });
 
 const buildOutlookCalendarUrl = event =>
