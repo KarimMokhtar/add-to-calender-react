@@ -5,7 +5,6 @@ export const MEETING_DATA = {
   startAt: "2021-12-20T10:00:00Z",
   endAt: "2021-12-20T11:00:00Z",
   details: `Event details go here`,
-  timeZone: "Europe/Berlin",
 };
 
 export const CALENDAR_OPTIONS = [
@@ -48,7 +47,6 @@ const buildGoogleCalendarUrl = event =>
     location: event.location,
     text: event.name,
     details: event.details,
-    // ctz: event.timeZone,
   });
 
 const buildOutlookCalendarUrl = event =>
